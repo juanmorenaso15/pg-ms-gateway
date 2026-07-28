@@ -1,0 +1,72 @@
+server: 
+  port: 9090
+
+spring:
+  application:
+    name: pg-ms-gateway
+  autoconfigure:
+    exclude:
+      - org.springframework.boot.autoconfigure.jdbc.DataSourceAutoConfiguration
+      - org.springframework.boot.autoconfigure.orm.jpa.HibernateJpaAutoConfiguration
+      - org.springframework.boot.autoconfigure.jdbc.DataSourceTransactionManagerAutoConfiguration
+  cloud:
+    consul: 
+      host: consul
+      port: 8500
+      discovery:
+        register: true
+        health-check-path: /actuator/health
+        prefer-ip-address: false
+        instance-id: ${spring.application.name}
+    gateway:
+      discovery:
+        locator:
+          enabled: true
+          lower-case-service-id: true
+      # Configuración de CORS a nivel de Gateway (alternativa a la clase Java)
+      globalcors:
+        cors-configurations:
+          '[/**]':
+            allowedOrigins: 
+              - "http://localhost:3000"
+              - "http://localhost:4200"
+              - "http://localhost:5500"
+              - "http://127.0.0.1:3000"
+            allowedMethods:
+              - GET
+              - POST
+              - PUT
+              - DELETE
+              - PATCH
+              - OPTIONS
+            allowedHeaders:
+              - Authorization
+              - Content-Type
+              - X-User-Id
+              - X-User-Rol
+              - X-User-Email
+              - X-User-Name
+              - Accept
+            exposedHeaders:
+              - X-User-Id
+              - X-User-Rol
+              - X-User-Email
+            allowCredentials: true
+            maxAge: 3600
+
+management:
+  endpoints:
+    web:
+      exposure:
+        include: health,info
+  endpoint:
+    health:
+      show-details: always
+
+security:
+  jwt:
+    secret-key: ${JWT_SECRET}
+    token-expiration: 3600000
+biometric:
+  jwt:
+    secret-key: ${BIOMETRIC_JWT_SECRET}
