@@ -16,8 +16,13 @@ public class CorsConfig {
     public CorsWebFilter corsWebFilter() {
         CorsConfiguration corsConfig = new CorsConfiguration();
         
+        // Agregar todos los orígenes que necesitas
         corsConfig.setAllowedOrigins(Arrays.asList(
-            "http://localhost:4200"
+            "http://localhost:4200",
+            "http://localhost:5500",
+            "http://127.0.0.1:5500",    
+            "http://localhost:3000",    
+            "http://127.0.0.1:3000"     
         ));
         
         corsConfig.setAllowedMethods(Arrays.asList(
