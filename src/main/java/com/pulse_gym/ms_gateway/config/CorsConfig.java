@@ -16,13 +16,15 @@ public class CorsConfig {
     public CorsWebFilter corsWebFilter() {
         CorsConfiguration corsConfig = new CorsConfiguration();
         
-        // Agregar todos los orígenes que necesitas
-        corsConfig.setAllowedOrigins(Arrays.asList(
+        corsConfig.setAllowedOriginPatterns(Arrays.asList(
             "http://localhost:4200",
             "http://localhost:5500",
             "http://127.0.0.1:5500",    
             "http://localhost:3000",    
-            "http://127.0.0.1:3000"     
+            "http://127.0.0.1:3000",
+            "https://front-end-pulsegym.pages.dev",
+            "https://*.front-end-pulsegym.pages.dev",
+            "https://*.pulsegym.uk"
         ));
         
         corsConfig.setAllowedMethods(Arrays.asList(
@@ -49,7 +51,6 @@ public class CorsConfig {
         ));
         
         corsConfig.setAllowCredentials(true);
-        
         corsConfig.setMaxAge(3600L);
 
         UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource(new PathPatternParser());
