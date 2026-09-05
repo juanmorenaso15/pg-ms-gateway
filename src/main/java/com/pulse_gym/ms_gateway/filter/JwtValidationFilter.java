@@ -120,6 +120,7 @@ public class JwtValidationFilter implements GlobalFilter, Ordered {
                 || path.startsWith("/pg-ms-auth/auth/reset-password")
                 || path.startsWith("/pg-ms-operation/api/asistencias/entrada-biometrica")
                 || path.startsWith("/pg-ms-operation/api/asistencias/entrada-biometrica")
+                || path.contains("/api/v1/pagos/comprobante/")
                 || path.startsWith("/pg-ms-auth/auth/biometric/login");
     }
 
