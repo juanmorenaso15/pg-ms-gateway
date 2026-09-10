@@ -23,7 +23,6 @@ spring:
         locator:
           enabled: true
           lower-case-service-id: true
-      # Configuración de CORS a nivel de Gateway (alternativa a la clase Java)
       globalcors:
         cors-configurations:
           '[/**]':
