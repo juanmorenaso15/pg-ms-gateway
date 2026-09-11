@@ -24,7 +24,8 @@ public class CorsConfig {
             "http://127.0.0.1:3000",
             "https://front-end-pulsegym.pages.dev",
             "https://*.front-end-pulsegym.pages.dev",
-            "https://*.pulsegym.uk"
+            "https://*.pulsegym.uk",
+            "https://api.pulsegym.uk"
         ));
         
         corsConfig.setAllowedMethods(Arrays.asList(
