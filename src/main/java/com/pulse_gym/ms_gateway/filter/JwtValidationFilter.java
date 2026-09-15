@@ -67,17 +67,22 @@ public class JwtValidationFilter implements GlobalFilter, Ordered {
     /** Valida el JWT y agrega los datos del usuario a los headers de la petición */
     @Override
     public Mono<Void> filter(ServerWebExchange exchange, GatewayFilterChain chain) {
-        String path = exchange.getRequest().getURI().getPath();
+        ServerHttpRequest request = exchange.getRequest();
+        String path = request.getURI().getPath();
+
+        if (request.getMethod() == HttpMethod.OPTIONS) {
+            return chain.filter(exchange);
+        }
+
+        if (isPublicPath(path)) {
+            return chain.filter(exchange);
+        }
 
         if (isInternalPath(path)) {
             return forbidden(exchange, "Acceso denegado a rutas internas");
         }
 
-        if (isPublicPath(path) || exchange.getRequest().getMethod() == HttpMethod.OPTIONS) {
-            return chain.filter(exchange);
-        }
-
-        List<String> authHeaders = exchange.getRequest().getHeaders().getOrEmpty(HttpHeaders.AUTHORIZATION);
+        List<String> authHeaders = request.getHeaders().getOrEmpty(HttpHeaders.AUTHORIZATION);
         if (authHeaders.isEmpty() || !authHeaders.get(0).startsWith("Bearer ")) {
             return unauthorized(exchange, "Header Authorization missing or invalid");
         }
@@ -92,18 +97,14 @@ public class JwtValidationFilter implements GlobalFilter, Ordered {
         String email = jwtService.extractEmail(token);
         String username = jwtService.extractUsername(token);
 
-        ServerHttpRequest mutatedRequest = exchange.getRequest().mutate()
+        ServerHttpRequest mutatedRequest = request.mutate()
                 .header("X-User-Id", userId != null ? userId.toString() : "")
                 .header("X-User-Name", username != null ? username : "")
                 .header("X-User-Rol", rol != null ? rol : "")
                 .header("X-User-Email", email != null ? email : "")
                 .build();
 
-        ServerWebExchange mutatedExchange = exchange.mutate()
-                .request(mutatedRequest)
-                .build();
-
-        return chain.filter(mutatedExchange);
+        return chain.filter(exchange.mutate().request(mutatedRequest).build());
     }
 
     /**
@@ -123,7 +124,7 @@ public class JwtValidationFilter implements GlobalFilter, Ordered {
                 || path.startsWith("/pg-ms-auth/auth/biometric/login")
                 || path.contains("/api/v1/pagos/comprobante/")
                 || path.contains("/webhook/mercadopago")
-                || path.contains("/api/webhooks/whatsapp"); 
+                || path.contains("/api/webhooks/whatsapp");
     }
 
     /**
