@@ -15,48 +15,38 @@ public class CorsConfig {
     @Bean
     public CorsWebFilter corsWebFilter() {
         CorsConfiguration corsConfig = new CorsConfiguration();
-        
+
         corsConfig.setAllowedOriginPatterns(Arrays.asList(
-            "http://localhost:4200",
-            "http://localhost:5500",
-            "http://127.0.0.1:5500",    
-            "http://localhost:3000",    
-            "http://127.0.0.1:3000",
-            "https://front-end-pulsegym.pages.dev",
-            "https://*.front-end-pulsegym.pages.dev",
-            "https://*.pulsegym.uk",
-            "https://api.pulsegym.uk"
-        ));
-        
+                "http://localhost:4200",
+                "http://localhost:5500",
+                "http://127.0.0.1:5500",
+                "http://localhost:3000",
+                "http://127.0.0.1:3000",
+                "https://front-end-pulsegym.pages.dev",
+                "https://*.front-end-pulsegym.pages.dev",
+                "https://*.pulsegym.uk",
+                "https://api.pulsegym.uk",
+                "capacitor://localhost",
+                "ionic://localhost",
+                "http://localhost",
+                "https://localhost"));
+
         corsConfig.setAllowedMethods(Arrays.asList(
-            "GET", "POST", "PUT", "DELETE", "PATCH", "OPTIONS"
-        ));
-        
-        corsConfig.setAllowedHeaders(Arrays.asList(
-            "Authorization",
-            "Content-Type",
-            "X-User-Id",
-            "X-User-Rol",
-            "X-User-Email",
-            "X-User-Name",
-            "Accept",
-            "Origin",
-            "Access-Control-Request-Method",
-            "Access-Control-Request-Headers"
-        ));
-        
+                "GET", "POST", "PUT", "DELETE", "PATCH", "OPTIONS"));
+
+        corsConfig.setAllowedHeaders(Arrays.asList("*")); // Permitir todos los headers dinámicamente evita bloqueos por
+                                                          // headers personalizados
         corsConfig.setExposedHeaders(Arrays.asList(
-            "X-User-Id",
-            "X-User-Rol",
-            "X-User-Email"
-        ));
-        
+                "X-User-Id",
+                "X-User-Rol",
+                "X-User-Email"));
+
         corsConfig.setAllowCredentials(true);
         corsConfig.setMaxAge(3600L);
 
         UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource(new PathPatternParser());
         source.registerCorsConfiguration("/**", corsConfig);
-        
+
         return new CorsWebFilter(source);
     }
 }

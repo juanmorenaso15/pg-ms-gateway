@@ -10,6 +10,11 @@ spring:
       - org.springframework.boot.autoconfigure.orm.jpa.HibernateJpaAutoConfiguration
       - org.springframework.boot.autoconfigure.jdbc.DataSourceTransactionManagerAutoConfiguration
   cloud:
+    routes:
+        - id: pg-ms-notifications-webhook
+          uri: lb://pg-ms-notifications
+          predicates:
+            - Path=/api/webhooks/**
     consul: 
       host: consul
       port: 8500
