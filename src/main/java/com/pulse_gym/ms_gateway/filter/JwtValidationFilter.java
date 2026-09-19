@@ -124,7 +124,10 @@ public class JwtValidationFilter implements GlobalFilter, Ordered {
                 || path.startsWith("/pg-ms-auth/auth/biometric/login")
                 || path.contains("/api/v1/pagos/comprobante/")
                 || path.contains("/webhook/mercadopago")
-                || path.contains("/api/webhooks/whatsapp");
+                || path.contains("/api/webhooks/whatsapp")
+                || path.startsWith("/api/chat")
+                || path.startsWith("/api/status")
+                || path.startsWith("/api/history");
     }
 
     /**
