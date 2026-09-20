@@ -127,7 +127,8 @@ public class JwtValidationFilter implements GlobalFilter, Ordered {
                 || path.contains("/api/webhooks/whatsapp")
                 || path.startsWith("/api/chat")
                 || path.startsWith("/api/status")
-                || path.startsWith("/api/history");
+                || path.startsWith("/api/history")
+                || path.startsWith("/pg-ms-whatsapp-web/");
     }
 
     /**
