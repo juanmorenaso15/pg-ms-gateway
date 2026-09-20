@@ -48,6 +48,13 @@ spring:
           predicates:
             - Path=/api/history/clear/**
 
+        - id: pg-ms-whatsapp-web
+          uri: http://pg-ms-whatsapp-web:8095
+          predicates:
+            - Path=/pg-ms-whatsapp-web/**
+          filters:
+            - StripPrefix=1
+
       discovery:
         locator:
           enabled: true
